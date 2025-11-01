@@ -67,7 +67,7 @@ export default function WorkoutSessionPage() {
 
   const loadWorkout = async () => {
     try {
-      const workoutData = await WorkoutsCollection.getWorkout(workoutId);
+      const workoutData = await WorkoutsCollection.getWorkout(user!.uid, workoutId);
       if (workoutData) {
         setWorkout(workoutData);
         initializeSessionExercises(workoutData);
@@ -165,7 +165,7 @@ export default function WorkoutSessionPage() {
       const endTime = new Date();
       const duration = Math.round((endTime.getTime() - sessionStartTime.getTime()) / 1000 / 60);
 
-      await WorkoutSessionsCollection.createWorkoutSession({
+      await WorkoutSessionsCollection.createWorkoutSession(user!.uid, {
         userId: user!.uid,
         workoutId,
         name: workout.name,

@@ -52,7 +52,7 @@ export default function ExercisesPage() {
   const handleDeleteExercise = async (exerciseId: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este ejercicio?')) {
       try {
-        await ExercisesCollection.deleteExercise(exerciseId);
+        await ExercisesCollection.deleteExercise(user!.uid, exerciseId);
         loadExercises();
       } catch (error) {
         console.error('Error deleting exercise:', error);

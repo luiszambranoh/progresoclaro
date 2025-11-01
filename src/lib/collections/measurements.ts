@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   getDocs,
   limit,
@@ -19,12 +18,9 @@ export class MeasurementsCollection {
 
   static async getMeasurements(userId: string, limitCount: number = 100): Promise<Measurement[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('date', 'desc'),
-        limit(limitCount)
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const measurementsRef = collection(userDocRef, this.collectionName);
+      const q = query(measurementsRef, orderBy('date', 'desc'), limit(limitCount));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(doc => {
@@ -42,10 +38,11 @@ export class MeasurementsCollection {
     }
   }
 
-  static async getMeasurement(measurementId: string): Promise<Measurement | null> {
+  static async getMeasurement(userId: string, measurementId: string): Promise<Measurement | null> {
     try {
-      const docRef = doc(db, this.collectionName, measurementId);
-      const docSnap = await getDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const measurementDocRef = doc(userDocRef, this.collectionName, measurementId);
+      const docSnap = await getDoc(measurementDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -63,10 +60,12 @@ export class MeasurementsCollection {
     }
   }
 
-  static async createMeasurement(measurementData: Omit<Measurement, 'id' | 'createdAt'>): Promise<string> {
+  static async createMeasurement(userId: string, measurementData: Omit<Measurement, 'id' | 'createdAt'>): Promise<string> {
     try {
       const now = new Date();
-      const docRef = doc(collection(db, this.collectionName));
+      const userDocRef = doc(db, 'users', userId);
+      const measurementsRef = collection(userDocRef, this.collectionName);
+      const docRef = doc(measurementsRef);
 
       const measurementDoc = {
         ...measurementData,
@@ -81,20 +80,22 @@ export class MeasurementsCollection {
     }
   }
 
-  static async updateMeasurement(measurementId: string, updates: Partial<Omit<Measurement, 'id' | 'createdAt'>>): Promise<void> {
+  static async updateMeasurement(userId: string, measurementId: string, updates: Partial<Omit<Measurement, 'id' | 'createdAt'>>): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, measurementId);
-      await updateDoc(docRef, updates);
+      const userDocRef = doc(db, 'users', userId);
+      const measurementDocRef = doc(userDocRef, this.collectionName, measurementId);
+      await updateDoc(measurementDocRef, updates);
     } catch (error) {
       console.error('Error updating measurement:', error);
       throw error;
     }
   }
 
-  static async deleteMeasurement(measurementId: string): Promise<void> {
+  static async deleteMeasurement(userId: string, measurementId: string): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, measurementId);
-      await deleteDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const measurementDocRef = doc(userDocRef, this.collectionName, measurementId);
+      await deleteDoc(measurementDocRef);
     } catch (error) {
       console.error('Error deleting measurement:', error);
       throw error;
@@ -103,23 +104,22 @@ export class MeasurementsCollection {
 
   static async getMeasurementsByType(userId: string, type: string): Promise<Measurement[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('type', '==', type),
-        orderBy('date', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const measurementsRef = collection(userDocRef, this.collectionName);
+      const q = query(measurementsRef, orderBy('date', 'desc'));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return MeasurementSchema.parse({
-          id: doc.id,
-          ...data,
-          date: data.date?.toDate(),
-          createdAt: data.createdAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return MeasurementSchema.parse({
+            id: doc.id,
+            ...data,
+            date: data.date?.toDate(),
+            createdAt: data.createdAt?.toDate(),
+          });
+        })
+        .filter(measurement => measurement.type === type);
     } catch (error) {
       console.error('Error getting measurements by type:', error);
       throw error;
@@ -128,28 +128,28 @@ export class MeasurementsCollection {
 
   static async getLatestMeasurements(userId: string): Promise<Record<string, Measurement>> {
     try {
-      const types = ['weight', 'bodyFat', 'circumference'];
+      const userDocRef = doc(db, 'users', userId);
+      const measurementsRef = collection(userDocRef, this.collectionName);
+      const q = query(measurementsRef, orderBy('date', 'desc'));
+      const querySnapshot = await getDocs(q);
+
+      const measurements = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return MeasurementSchema.parse({
+          id: doc.id,
+          ...data,
+          date: data.date?.toDate(),
+          createdAt: data.createdAt?.toDate(),
+        });
+      });
+
       const latestMeasurements: Record<string, Measurement> = {};
+      const types = ['weight', 'bodyFat', 'circumference'];
 
       for (const type of types) {
-        const q = query(
-          collection(db, this.collectionName),
-          where('userId', '==', userId),
-          where('type', '==', type),
-          orderBy('date', 'desc'),
-          limit(1)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0];
-          const data = doc.data();
-          latestMeasurements[type] = MeasurementSchema.parse({
-            id: doc.id,
-            ...data,
-            date: data.date?.toDate(),
-            createdAt: data.createdAt?.toDate(),
-          });
+        const typeMeasurements = measurements.filter(m => m.type === type);
+        if (typeMeasurements.length > 0) {
+          latestMeasurements[type] = typeMeasurements[0];
         }
       }
 

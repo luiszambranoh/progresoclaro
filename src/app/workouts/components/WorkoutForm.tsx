@@ -100,9 +100,9 @@ export default function WorkoutForm({ workout, exercises, onSuccess, onCancel }:
       };
 
       if (workout) {
-        await WorkoutsCollection.updateWorkout(workout.id!, workoutData);
+        await WorkoutsCollection.updateWorkout(user.uid, workout.id!, workoutData);
       } else {
-        await WorkoutsCollection.createWorkout(workoutData);
+        await WorkoutsCollection.createWorkout(user.uid, workoutData);
       }
 
       onSuccess();

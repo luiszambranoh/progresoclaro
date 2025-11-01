@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   getDocs,
 } from 'firebase/firestore';
@@ -18,11 +17,9 @@ export class WorkoutsCollection {
 
   static async getWorkouts(userId: string): Promise<Workout[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('createdAt', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const workoutsRef = collection(userDocRef, this.collectionName);
+      const q = query(workoutsRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(doc => {
@@ -40,10 +37,11 @@ export class WorkoutsCollection {
     }
   }
 
-  static async getWorkout(workoutId: string): Promise<Workout | null> {
+  static async getWorkout(userId: string, workoutId: string): Promise<Workout | null> {
     try {
-      const docRef = doc(db, this.collectionName, workoutId);
-      const docSnap = await getDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const workoutDocRef = doc(userDocRef, this.collectionName, workoutId);
+      const docSnap = await getDoc(workoutDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -61,10 +59,12 @@ export class WorkoutsCollection {
     }
   }
 
-  static async createWorkout(workoutData: Omit<Workout, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  static async createWorkout(userId: string, workoutData: Omit<Workout, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
     try {
       const now = new Date();
-      const docRef = doc(collection(db, this.collectionName));
+      const userDocRef = doc(db, 'users', userId);
+      const workoutsRef = collection(userDocRef, this.collectionName);
+      const docRef = doc(workoutsRef);
 
       const workoutDoc = {
         ...workoutData,
@@ -80,10 +80,11 @@ export class WorkoutsCollection {
     }
   }
 
-  static async updateWorkout(workoutId: string, updates: Partial<Omit<Workout, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
+  static async updateWorkout(userId: string, workoutId: string, updates: Partial<Omit<Workout, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, workoutId);
-      await updateDoc(docRef, {
+      const userDocRef = doc(db, 'users', userId);
+      const workoutDocRef = doc(userDocRef, this.collectionName, workoutId);
+      await updateDoc(workoutDocRef, {
         ...updates,
         updatedAt: new Date(),
       });
@@ -93,10 +94,11 @@ export class WorkoutsCollection {
     }
   }
 
-  static async deleteWorkout(workoutId: string): Promise<void> {
+  static async deleteWorkout(userId: string, workoutId: string): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, workoutId);
-      await deleteDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const workoutDocRef = doc(userDocRef, this.collectionName, workoutId);
+      await deleteDoc(workoutDocRef);
     } catch (error) {
       console.error('Error deleting workout:', error);
       throw error;
@@ -105,23 +107,22 @@ export class WorkoutsCollection {
 
   static async getWorkoutsByDifficulty(userId: string, difficulty: string): Promise<Workout[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('difficulty', '==', difficulty),
-        orderBy('createdAt', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const workoutsRef = collection(userDocRef, this.collectionName);
+      const q = query(workoutsRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return WorkoutSchema.parse({
-          id: doc.id,
-          ...data,
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return WorkoutSchema.parse({
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          });
+        })
+        .filter(workout => workout.difficulty === difficulty);
     } catch (error) {
       console.error('Error getting workouts by difficulty:', error);
       throw error;

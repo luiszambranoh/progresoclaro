@@ -1,0 +1,225 @@
+[debug] [2025-11-01T22:07:59.178Z] ----------------------------------------------------------------------
+[debug] [2025-11-01T22:07:59.182Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Gonzalez\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules
+[debug] [2025-11-01T22:07:59.183Z] CLI Version:   14.22.0
+[debug] [2025-11-01T22:07:59.183Z] Platform:      win32
+[debug] [2025-11-01T22:07:59.183Z] Node Version:  v22.18.0
+[debug] [2025-11-01T22:07:59.183Z] Time:          Sat Nov 01 2025 18:07:59 GMT-0400 (Venezuela Time)
+[debug] [2025-11-01T22:07:59.184Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-01T22:07:59.415Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-01T22:07:59.416Z] > authorizing via signed-in user (zambranohle@gmail.com)
+[debug] [2025-11-01T22:07:59.416Z] [iam] checking project progreso-claro for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2025-11-01T22:07:59.417Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:07:59.418Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:07:59.419Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions [none]
+[debug] [2025-11-01T22:07:59.419Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions x-goog-quota-user=projects/progreso-claro
+[debug] [2025-11-01T22:07:59.419Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2025-11-01T22:07:59.862Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions 200
+[debug] [2025-11-01T22:07:59.863Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[info] 
+[info] === Deploying to 'progreso-claro'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2025-11-01T22:07:59.866Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:07:59.866Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:07:59.866Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) [none]
+[debug] [2025-11-01T22:08:00.177Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) 404
+[debug] [2025-11-01T22:08:00.177Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) {"error":{"code":404,"message":"Project 'progreso-claro' or database '(default)' does not exist.","status":"NOT_FOUND"}}
+[info] i  firestore: Creating the new Firestore database (default)... 
+[debug] [2025-11-01T22:08:00.178Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:00.178Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:00.178Z] >>> [apiv2][query] POST https://firestore.googleapis.com/v1/projects/progreso-claro/databases databaseId=%28default%29
+[debug] [2025-11-01T22:08:00.179Z] >>> [apiv2][body] POST https://firestore.googleapis.com/v1/projects/progreso-claro/databases {"locationId":"nam5","type":"FIRESTORE_NATIVE","databaseEdition":"STANDARD","deleteProtectionState":"DELETE_PROTECTION_DISABLED","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED"}
+[debug] [2025-11-01T22:08:03.133Z] <<< [apiv2][status] POST https://firestore.googleapis.com/v1/projects/progreso-claro/databases 200
+[debug] [2025-11-01T22:08:03.133Z] <<< [apiv2][body] POST https://firestore.googleapis.com/v1/projects/progreso-claro/databases {"name":"projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo","metadata":{"@type":"type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"},"response":{"@type":"type.googleapis.com/google.firestore.admin.v1.Database","name":"projects/progreso-claro/databases/(default)","uid":"4e7b8709-7664-4072-9610-3b6c4946fd9e","createTime":"2025-11-01T22:08:03.130666Z","updateTime":"2025-11-01T22:08:03.130666Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-11-01T22:08:03.130666Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"INGUq7r70ZADMKrqqbr70ZAD"}}
+[debug] [2025-11-01T22:08:03.135Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:03.135Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:03.135Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo [none]
+[debug] [2025-11-01T22:08:03.589Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo 200
+[debug] [2025-11-01T22:08:03.589Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo {"name":"projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo","metadata":{"@type":"type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"},"response":{"@type":"type.googleapis.com/google.firestore.admin.v1.Database","name":"projects/progreso-claro/databases/(default)","uid":"4e7b8709-7664-4072-9610-3b6c4946fd9e","createTime":"2025-11-01T22:08:03.130666Z","updateTime":"2025-11-01T22:08:03.130666Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-11-01T22:08:03.130666Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IP/ytLr70ZADMKrqqbr70ZAD"}}
+[debug] [2025-11-01T22:08:04.090Z] [LRO Poller] Retrying task index 0
+[debug] [2025-11-01T22:08:04.091Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.091Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.091Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo [none]
+[debug] [2025-11-01T22:08:04.593Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo 200
+[debug] [2025-11-01T22:08:04.594Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo {"name":"projects/progreso-claro/databases/(default)/operations/nv1GSWw7EJZyQGR2CYd7ThAqNW1hbgQiBRA-p5yQEAbImonDCAsKJxo","metadata":{"@type":"type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"},"done":true,"response":{"@type":"type.googleapis.com/google.firestore.admin.v1.Database","name":"projects/progreso-claro/databases/(default)","uid":"4e7b8709-7664-4072-9610-3b6c4946fd9e","createTime":"2025-11-01T22:08:03.130666Z","updateTime":"2025-11-01T22:08:03.130666Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-11-01T22:08:03.130666Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"INPi8rr70ZADMKrqqbr70ZAD"}}
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2025-11-01T22:08:04.599Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.599Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.600Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [none]
+[debug] [2025-11-01T22:08:04.600Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [omitted]
+[debug] [2025-11-01T22:08:04.944Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test 200
+[debug] [2025-11-01T22:08:04.945Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test {}
+[info] +  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2025-11-01T22:08:04.946Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.946Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:04.946Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases pageSize=10&pageToken=
+[debug] [2025-11-01T22:08:05.115Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases 200
+[debug] [2025-11-01T22:08:05.115Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases {}
+[info] i  firestore: uploading rules firestore.rules... 
+[debug] [2025-11-01T22:08:05.116Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.117Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.117Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets [none]
+[debug] [2025-11-01T22:08:05.117Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets [omitted]
+[debug] [2025-11-01T22:08:05.447Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets 200
+[debug] [2025-11-01T22:08:05.447Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets {"name":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921","source":{"files":[{"content":"rules_version='2'\n\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      // This rule allows anyone with your database reference to view, edit,\n      // and delete all data in your database. It is useful for getting\n      // started, but it is configured to expire after 30 days because it\n      // leaves your app open to attackers. At that time, all client\n      // requests to your database will be denied.\n      //\n      // Make sure to write security rules for your app before that time, or\n      // else all client requests to your database will be denied until you\n      // update your rules.\n      allow read, write: if request.time < timestamp.date(2025, 12, 1);\n    }\n  }\n}\n","name":"firestore.rules"}]},"createTime":"2025-11-01T22:08:05.466312Z","metadata":{"services":["cloud.firestore"]}}
+[debug] [2025-11-01T22:08:05.447Z] [rules] created ruleset projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921
+[debug] [2025-11-01T22:08:05.448Z] [rules] releasing cloud.firestore/(default) with ruleset projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921
+[debug] [2025-11-01T22:08:05.448Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.448Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.448Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) [none]
+[debug] [2025-11-01T22:08:05.448Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"release":{"name":"projects/progreso-claro/releases/cloud.firestore/(default)","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921"}}
+[debug] [2025-11-01T22:08:05.650Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) 404
+[debug] [2025-11-01T22:08:05.651Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"error":{"code":404,"message":"Requested entity was not found.","status":"NOT_FOUND"}}
+[debug] [2025-11-01T22:08:05.652Z] [rules] ruleset update failed, attempting to create instead
+[debug] [2025-11-01T22:08:05.653Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.653Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:05.653Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases [none]
+[debug] [2025-11-01T22:08:05.654Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases {"name":"projects/progreso-claro/releases/cloud.firestore/(default)","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921"}
+[debug] [2025-11-01T22:08:06.040Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases 200
+[debug] [2025-11-01T22:08:06.041Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases {"name":"projects/progreso-claro/releases/cloud.firestore","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921","createTime":"2025-11-01T22:08:06.057815Z","updateTime":"2025-11-01T22:08:06.057815Z"}
+[debug] [2025-11-01T22:08:06.042Z] [rules] created release projects/progreso-claro/releases/cloud.firestore
+[info] +  firestore: released rules firestore.rules to cloud.firestore 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/progreso-claro/overview
+[debug] [2025-11-01T22:08:45.999Z] ----------------------------------------------------------------------
+[debug] [2025-11-01T22:08:46.005Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Gonzalez\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules --project progreso-claro
+[debug] [2025-11-01T22:08:46.005Z] CLI Version:   14.22.0
+[debug] [2025-11-01T22:08:46.006Z] Platform:      win32
+[debug] [2025-11-01T22:08:46.006Z] Node Version:  v22.18.0
+[debug] [2025-11-01T22:08:46.006Z] Time:          Sat Nov 01 2025 18:08:46 GMT-0400 (Venezuela Time)
+[debug] [2025-11-01T22:08:46.006Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-01T22:08:46.432Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-01T22:08:46.435Z] > authorizing via signed-in user (zambranohle@gmail.com)
+[debug] [2025-11-01T22:08:46.436Z] [iam] checking project progreso-claro for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2025-11-01T22:08:46.438Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:46.439Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:46.440Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions [none]
+[debug] [2025-11-01T22:08:46.440Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions x-goog-quota-user=projects/progreso-claro
+[debug] [2025-11-01T22:08:46.441Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2025-11-01T22:08:46.788Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions 200
+[debug] [2025-11-01T22:08:46.789Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[info] 
+[info] === Deploying to 'progreso-claro'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2025-11-01T22:08:46.793Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:46.793Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:46.793Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) [none]
+[debug] [2025-11-01T22:08:47.238Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) 200
+[debug] [2025-11-01T22:08:47.238Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) {"name":"projects/progreso-claro/databases/(default)","uid":"4e7b8709-7664-4072-9610-3b6c4946fd9e","createTime":"2025-11-01T22:08:03.130666Z","updateTime":"2025-11-01T22:08:03.130666Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-11-01T22:08:03.130666Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IOetsM/70ZADMKrqqbr70ZAD"}
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2025-11-01T22:08:47.239Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.240Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.240Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [none]
+[debug] [2025-11-01T22:08:47.240Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [omitted]
+[debug] [2025-11-01T22:08:47.555Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test 200
+[debug] [2025-11-01T22:08:47.556Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test {}
+[info] +  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2025-11-01T22:08:47.557Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.557Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.557Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases pageSize=10&pageToken=
+[debug] [2025-11-01T22:08:47.733Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases 200
+[debug] [2025-11-01T22:08:47.733Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases {"releases":[{"name":"projects/progreso-claro/releases/cloud.firestore","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921","createTime":"2025-11-01T22:08:06.057815Z","updateTime":"2025-11-01T22:08:06.057815Z"}]}
+[debug] [2025-11-01T22:08:47.733Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.733Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.734Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 [none]
+[debug] [2025-11-01T22:08:47.912Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 200
+[debug] [2025-11-01T22:08:47.912Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 [omitted]
+[info] i  firestore: latest version of firestore.rules already up to date, skipping upload... 
+[debug] [2025-11-01T22:08:47.913Z] [rules] releasing cloud.firestore/(default) with ruleset projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921
+[debug] [2025-11-01T22:08:47.914Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.914Z] Checked if tokens are valid: true, expires at: 1762036100923
+[debug] [2025-11-01T22:08:47.914Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) [none]
+[debug] [2025-11-01T22:08:47.914Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"release":{"name":"projects/progreso-claro/releases/cloud.firestore/(default)","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921"}}
+[debug] [2025-11-01T22:08:48.314Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) 200
+[debug] [2025-11-01T22:08:48.314Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"name":"projects/progreso-claro/releases/cloud.firestore","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921","createTime":"2025-11-01T22:08:06.057815Z","updateTime":"2025-11-01T22:08:48.310429Z"}
+[debug] [2025-11-01T22:08:48.314Z] [rules] updated release projects/progreso-claro/releases/cloud.firestore
+[info] +  firestore: released rules firestore.rules to cloud.firestore 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/progreso-claro/overview
+[debug] [2025-11-01T22:14:25.437Z] ----------------------------------------------------------------------
+[debug] [2025-11-01T22:14:25.440Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Gonzalez\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only firestore:rules --project progreso-claro
+[debug] [2025-11-01T22:14:25.441Z] CLI Version:   14.22.0
+[debug] [2025-11-01T22:14:25.441Z] Platform:      win32
+[debug] [2025-11-01T22:14:25.441Z] Node Version:  v22.18.0
+[debug] [2025-11-01T22:14:25.441Z] Time:          Sat Nov 01 2025 18:14:25 GMT-0400 (Venezuela Time)
+[debug] [2025-11-01T22:14:25.441Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-01T22:14:25.673Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-01T22:14:25.674Z] > authorizing via signed-in user (zambranohle@gmail.com)
+[debug] [2025-11-01T22:14:25.674Z] [iam] checking project progreso-claro for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2025-11-01T22:14:25.676Z] Checked if tokens are valid: false, expires at: 1762036100923
+[debug] [2025-11-01T22:14:25.680Z] Checked if tokens are valid: false, expires at: 1762036100923
+[debug] [2025-11-01T22:14:25.684Z] > refreshing access token with scopes: []
+[debug] [2025-11-01T22:14:25.688Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-01T22:14:25.688Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-01T22:14:26.089Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-01T22:14:26.090Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-01T22:14:26.114Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions [none]
+[debug] [2025-11-01T22:14:26.115Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions x-goog-quota-user=projects/progreso-claro
+[debug] [2025-11-01T22:14:26.115Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2025-11-01T22:14:26.476Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions 200
+[debug] [2025-11-01T22:14:26.477Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/progreso-claro:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[info] 
+[info] === Deploying to 'progreso-claro'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2025-11-01T22:14:26.488Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:26.488Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:26.489Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) [none]
+[debug] [2025-11-01T22:14:26.957Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) 200
+[debug] [2025-11-01T22:14:26.957Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/progreso-claro/databases/(default) {"name":"projects/progreso-claro/databases/(default)","uid":"4e7b8709-7664-4072-9610-3b6c4946fd9e","createTime":"2025-11-01T22:08:03.130666Z","updateTime":"2025-11-01T22:08:03.130666Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-11-01T22:08:03.130666Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IN/UrvH80ZADMKrqqbr70ZAD"}
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2025-11-01T22:14:26.963Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:26.963Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:26.963Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [none]
+[debug] [2025-11-01T22:14:26.964Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test [omitted]
+[debug] [2025-11-01T22:14:27.355Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test 200
+[debug] [2025-11-01T22:14:27.355Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro:test {}
+[info] +  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2025-11-01T22:14:27.358Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.358Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.359Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases pageSize=10&pageToken=
+[debug] [2025-11-01T22:14:27.533Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases 200
+[debug] [2025-11-01T22:14:27.533Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases {"releases":[{"name":"projects/progreso-claro/releases/cloud.firestore","rulesetName":"projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921","createTime":"2025-11-01T22:08:06.057815Z","updateTime":"2025-11-01T22:08:48.310429Z"}]}
+[debug] [2025-11-01T22:14:27.534Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.534Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.534Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 [none]
+[debug] [2025-11-01T22:14:27.715Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 200
+[debug] [2025-11-01T22:14:27.715Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets/7c30d6ce-737d-4ec7-80ba-c163eb3e3921 [omitted]
+[info] i  firestore: uploading rules firestore.rules... 
+[debug] [2025-11-01T22:14:27.716Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.716Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:27.716Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets [none]
+[debug] [2025-11-01T22:14:27.716Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets [omitted]
+[debug] [2025-11-01T22:14:28.030Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets 200
+[debug] [2025-11-01T22:14:28.031Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/progreso-claro/rulesets {"name":"projects/progreso-claro/rulesets/f482dcf9-cdce-4e17-bbfa-6b70eb4fbb33","source":{"files":[{"content":"rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    // Users collection - users can only access their own data\n    match /users/{userId} {\n      allow read, write: if request.auth != null && request.auth.uid == userId;\n\n      // Subcollections within user documents\n      match /workouts/{workoutId} {\n        allow read, write: if request.auth != null && request.auth.uid == userId;\n      }\n\n      match /exercises/{exerciseId} {\n        allow read, write: if request.auth != null && request.auth.uid == userId;\n      }\n\n      match /workoutSessions/{sessionId} {\n        allow read, write: if request.auth != null && request.auth.uid == userId;\n      }\n\n      match /measurements/{measurementId} {\n        allow read, write: if request.auth != null && request.auth.uid == userId;\n      }\n\n      match /personalRecords/{recordId} {\n        allow read, write: if request.auth != null && request.auth.uid == userId;\n      }\n    }\n  }\n}\n","name":"firestore.rules"}]},"createTime":"2025-11-01T22:14:28.048415Z","metadata":{"services":["cloud.firestore"]}}
+[debug] [2025-11-01T22:14:28.031Z] [rules] created ruleset projects/progreso-claro/rulesets/f482dcf9-cdce-4e17-bbfa-6b70eb4fbb33
+[debug] [2025-11-01T22:14:28.032Z] [rules] releasing cloud.firestore/(default) with ruleset projects/progreso-claro/rulesets/f482dcf9-cdce-4e17-bbfa-6b70eb4fbb33
+[debug] [2025-11-01T22:14:28.032Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:28.033Z] Checked if tokens are valid: true, expires at: 1762038865091
+[debug] [2025-11-01T22:14:28.033Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) [none]
+[debug] [2025-11-01T22:14:28.033Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"release":{"name":"projects/progreso-claro/releases/cloud.firestore/(default)","rulesetName":"projects/progreso-claro/rulesets/f482dcf9-cdce-4e17-bbfa-6b70eb4fbb33"}}
+[debug] [2025-11-01T22:14:28.381Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) 200
+[debug] [2025-11-01T22:14:28.382Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/progreso-claro/releases/cloud.firestore/(default) {"name":"projects/progreso-claro/releases/cloud.firestore","rulesetName":"projects/progreso-claro/rulesets/f482dcf9-cdce-4e17-bbfa-6b70eb4fbb33","createTime":"2025-11-01T22:08:06.057815Z","updateTime":"2025-11-01T22:14:28.402674Z"}
+[debug] [2025-11-01T22:14:28.382Z] [rules] updated release projects/progreso-claro/releases/cloud.firestore
+[info] +  firestore: released rules firestore.rules to cloud.firestore 
+[info] 
+[info] +  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/progreso-claro/overview

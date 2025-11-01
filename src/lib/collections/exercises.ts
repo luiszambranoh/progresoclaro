@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   getDocs,
   limit,
@@ -19,11 +18,9 @@ export class ExercisesCollection {
 
   static async getExercises(userId: string): Promise<Exercise[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('createdAt', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const exercisesRef = collection(userDocRef, this.collectionName);
+      const q = query(exercisesRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(doc => {
@@ -41,10 +38,11 @@ export class ExercisesCollection {
     }
   }
 
-  static async getExercise(exerciseId: string): Promise<Exercise | null> {
+  static async getExercise(userId: string, exerciseId: string): Promise<Exercise | null> {
     try {
-      const docRef = doc(db, this.collectionName, exerciseId);
-      const docSnap = await getDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const exerciseDocRef = doc(userDocRef, this.collectionName, exerciseId);
+      const docSnap = await getDoc(exerciseDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -62,10 +60,12 @@ export class ExercisesCollection {
     }
   }
 
-  static async createExercise(exerciseData: Omit<Exercise, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  static async createExercise(userId: string, exerciseData: Omit<Exercise, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
     try {
       const now = new Date();
-      const docRef = doc(collection(db, this.collectionName));
+      const userDocRef = doc(db, 'users', userId);
+      const exercisesRef = collection(userDocRef, this.collectionName);
+      const docRef = doc(exercisesRef);
 
       const exerciseDoc = {
         ...exerciseData,
@@ -81,10 +81,11 @@ export class ExercisesCollection {
     }
   }
 
-  static async updateExercise(exerciseId: string, updates: Partial<Omit<Exercise, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
+  static async updateExercise(userId: string, exerciseId: string, updates: Partial<Omit<Exercise, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, exerciseId);
-      await updateDoc(docRef, {
+      const userDocRef = doc(db, 'users', userId);
+      const exerciseDocRef = doc(userDocRef, this.collectionName, exerciseId);
+      await updateDoc(exerciseDocRef, {
         ...updates,
         updatedAt: new Date(),
       });
@@ -94,10 +95,11 @@ export class ExercisesCollection {
     }
   }
 
-  static async deleteExercise(exerciseId: string): Promise<void> {
+  static async deleteExercise(userId: string, exerciseId: string): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, exerciseId);
-      await deleteDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const exerciseDocRef = doc(userDocRef, this.collectionName, exerciseId);
+      await deleteDoc(exerciseDocRef);
     } catch (error) {
       console.error('Error deleting exercise:', error);
       throw error;
@@ -106,23 +108,22 @@ export class ExercisesCollection {
 
   static async getExercisesByCategory(userId: string, category: string): Promise<Exercise[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('category', '==', category),
-        orderBy('createdAt', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const exercisesRef = collection(userDocRef, this.collectionName);
+      const q = query(exercisesRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return ExerciseSchema.parse({
-          id: doc.id,
-          ...data,
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return ExerciseSchema.parse({
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          });
+        })
+        .filter(exercise => exercise.category === category);
     } catch (error) {
       console.error('Error getting exercises by category:', error);
       throw error;
@@ -131,12 +132,9 @@ export class ExercisesCollection {
 
   static async searchExercises(userId: string, searchTerm: string, limitCount: number = 20): Promise<Exercise[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('name'),
-        limit(limitCount)
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const exercisesRef = collection(userDocRef, this.collectionName);
+      const q = query(exercisesRef, orderBy('name'), limit(limitCount));
       const querySnapshot = await getDocs(q);
 
       const exercises = querySnapshot.docs.map(doc => {

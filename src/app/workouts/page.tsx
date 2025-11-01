@@ -65,7 +65,7 @@ export default function WorkoutsPage() {
   const handleDeleteWorkout = async (workoutId: string) => {
     if (confirm('¿Estás seguro de que quieres eliminar este entrenamiento?')) {
       try {
-        await WorkoutsCollection.deleteWorkout(workoutId);
+        await WorkoutsCollection.deleteWorkout(user!.uid, workoutId);
         loadWorkouts();
       } catch (error) {
         console.error('Error deleting workout:', error);

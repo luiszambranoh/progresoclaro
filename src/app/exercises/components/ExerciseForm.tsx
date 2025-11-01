@@ -64,9 +64,9 @@ export default function ExerciseForm({ exercise, onSuccess, onCancel }: Exercise
       };
 
       if (exercise) {
-        await ExercisesCollection.updateExercise(exercise.id!, exerciseData);
+        await ExercisesCollection.updateExercise(user.uid, exercise.id!, exerciseData);
       } else {
-        await ExercisesCollection.createExercise(exerciseData);
+        await ExercisesCollection.createExercise(user.uid, exerciseData);
       }
 
       onSuccess();

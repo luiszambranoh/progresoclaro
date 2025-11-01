@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   getDocs,
   limit,
@@ -19,12 +18,9 @@ export class WorkoutSessionsCollection {
 
   static async getWorkoutSessions(userId: string, limitCount: number = 50): Promise<WorkoutSession[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('startTime', 'desc'),
-        limit(limitCount)
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const sessionsRef = collection(userDocRef, this.collectionName);
+      const q = query(sessionsRef, orderBy('startTime', 'desc'), limit(limitCount));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(doc => {
@@ -44,10 +40,11 @@ export class WorkoutSessionsCollection {
     }
   }
 
-  static async getWorkoutSession(sessionId: string): Promise<WorkoutSession | null> {
+  static async getWorkoutSession(userId: string, sessionId: string): Promise<WorkoutSession | null> {
     try {
-      const docRef = doc(db, this.collectionName, sessionId);
-      const docSnap = await getDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const sessionDocRef = doc(userDocRef, this.collectionName, sessionId);
+      const docSnap = await getDoc(sessionDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -67,10 +64,12 @@ export class WorkoutSessionsCollection {
     }
   }
 
-  static async createWorkoutSession(sessionData: Omit<WorkoutSession, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  static async createWorkoutSession(userId: string, sessionData: Omit<WorkoutSession, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
     try {
       const now = new Date();
-      const docRef = doc(collection(db, this.collectionName));
+      const userDocRef = doc(db, 'users', userId);
+      const sessionsRef = collection(userDocRef, this.collectionName);
+      const docRef = doc(sessionsRef);
 
       const sessionDoc = {
         ...sessionData,
@@ -86,10 +85,11 @@ export class WorkoutSessionsCollection {
     }
   }
 
-  static async updateWorkoutSession(sessionId: string, updates: Partial<Omit<WorkoutSession, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
+  static async updateWorkoutSession(userId: string, sessionId: string, updates: Partial<Omit<WorkoutSession, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, sessionId);
-      await updateDoc(docRef, {
+      const userDocRef = doc(db, 'users', userId);
+      const sessionDocRef = doc(userDocRef, this.collectionName, sessionId);
+      await updateDoc(sessionDocRef, {
         ...updates,
         updatedAt: new Date(),
       });
@@ -99,10 +99,11 @@ export class WorkoutSessionsCollection {
     }
   }
 
-  static async deleteWorkoutSession(sessionId: string): Promise<void> {
+  static async deleteWorkoutSession(userId: string, sessionId: string): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, sessionId);
-      await deleteDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const sessionDocRef = doc(userDocRef, this.collectionName, sessionId);
+      await deleteDoc(sessionDocRef);
     } catch (error) {
       console.error('Error deleting workout session:', error);
       throw error;
@@ -111,26 +112,24 @@ export class WorkoutSessionsCollection {
 
   static async getRecentSessions(userId: string, limitCount: number = 5): Promise<WorkoutSession[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('completed', '==', true),
-        orderBy('endTime', 'desc'),
-        limit(limitCount)
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const sessionsRef = collection(userDocRef, this.collectionName);
+      const q = query(sessionsRef, orderBy('endTime', 'desc'), limit(limitCount));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return WorkoutSessionSchema.parse({
-          id: doc.id,
-          ...data,
-          startTime: data.startTime?.toDate(),
-          endTime: data.endTime?.toDate(),
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return WorkoutSessionSchema.parse({
+            id: doc.id,
+            ...data,
+            startTime: data.startTime?.toDate(),
+            endTime: data.endTime?.toDate(),
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          });
+        })
+        .filter(session => session.completed);
     } catch (error) {
       console.error('Error getting recent sessions:', error);
       throw error;
@@ -139,25 +138,24 @@ export class WorkoutSessionsCollection {
 
   static async getSessionsByWorkout(userId: string, workoutId: string): Promise<WorkoutSession[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('workoutId', '==', workoutId),
-        orderBy('startTime', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const sessionsRef = collection(userDocRef, this.collectionName);
+      const q = query(sessionsRef, orderBy('startTime', 'desc'));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return WorkoutSessionSchema.parse({
-          id: doc.id,
-          ...data,
-          startTime: data.startTime?.toDate(),
-          endTime: data.endTime?.toDate(),
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return WorkoutSessionSchema.parse({
+            id: doc.id,
+            ...data,
+            startTime: data.startTime?.toDate(),
+            endTime: data.endTime?.toDate(),
+            createdAt: data.createdAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate(),
+          });
+        })
+        .filter(session => session.workoutId === workoutId);
     } catch (error) {
       console.error('Error getting sessions by workout:', error);
       throw error;

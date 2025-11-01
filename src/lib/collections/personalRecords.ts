@@ -6,7 +6,6 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
   getDocs,
   limit,
@@ -19,11 +18,9 @@ export class PersonalRecordsCollection {
 
   static async getPersonalRecords(userId: string): Promise<PersonalRecord[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('date', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const recordsRef = collection(userDocRef, this.collectionName);
+      const q = query(recordsRef, orderBy('date', 'desc'));
       const querySnapshot = await getDocs(q);
 
       return querySnapshot.docs.map(doc => {
@@ -41,10 +38,11 @@ export class PersonalRecordsCollection {
     }
   }
 
-  static async getPersonalRecord(recordId: string): Promise<PersonalRecord | null> {
+  static async getPersonalRecord(userId: string, recordId: string): Promise<PersonalRecord | null> {
     try {
-      const docRef = doc(db, this.collectionName, recordId);
-      const docSnap = await getDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const recordDocRef = doc(userDocRef, this.collectionName, recordId);
+      const docSnap = await getDoc(recordDocRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -62,10 +60,12 @@ export class PersonalRecordsCollection {
     }
   }
 
-  static async createPersonalRecord(recordData: Omit<PersonalRecord, 'id' | 'createdAt'>): Promise<string> {
+  static async createPersonalRecord(userId: string, recordData: Omit<PersonalRecord, 'id' | 'createdAt'>): Promise<string> {
     try {
       const now = new Date();
-      const docRef = doc(collection(db, this.collectionName));
+      const userDocRef = doc(db, 'users', userId);
+      const recordsRef = collection(userDocRef, this.collectionName);
+      const docRef = doc(recordsRef);
 
       const recordDoc = {
         ...recordData,
@@ -80,20 +80,22 @@ export class PersonalRecordsCollection {
     }
   }
 
-  static async updatePersonalRecord(recordId: string, updates: Partial<Omit<PersonalRecord, 'id' | 'createdAt'>>): Promise<void> {
+  static async updatePersonalRecord(userId: string, recordId: string, updates: Partial<Omit<PersonalRecord, 'id' | 'createdAt'>>): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, recordId);
-      await updateDoc(docRef, updates);
+      const userDocRef = doc(db, 'users', userId);
+      const recordDocRef = doc(userDocRef, this.collectionName, recordId);
+      await updateDoc(recordDocRef, updates);
     } catch (error) {
       console.error('Error updating personal record:', error);
       throw error;
     }
   }
 
-  static async deletePersonalRecord(recordId: string): Promise<void> {
+  static async deletePersonalRecord(userId: string, recordId: string): Promise<void> {
     try {
-      const docRef = doc(db, this.collectionName, recordId);
-      await deleteDoc(docRef);
+      const userDocRef = doc(db, 'users', userId);
+      const recordDocRef = doc(userDocRef, this.collectionName, recordId);
+      await deleteDoc(recordDocRef);
     } catch (error) {
       console.error('Error deleting personal record:', error);
       throw error;
@@ -102,23 +104,22 @@ export class PersonalRecordsCollection {
 
   static async getPersonalRecordsByExercise(userId: string, exerciseId: string): Promise<PersonalRecord[]> {
     try {
-      const q = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        where('exerciseId', '==', exerciseId),
-        orderBy('date', 'desc')
-      );
+      const userDocRef = doc(db, 'users', userId);
+      const recordsRef = collection(userDocRef, this.collectionName);
+      const q = query(recordsRef, orderBy('date', 'desc'));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        return PersonalRecordSchema.parse({
-          id: doc.id,
-          ...data,
-          date: data.date?.toDate(),
-          createdAt: data.createdAt?.toDate(),
-        });
-      });
+      return querySnapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          return PersonalRecordSchema.parse({
+            id: doc.id,
+            ...data,
+            date: data.date?.toDate(),
+            createdAt: data.createdAt?.toDate(),
+          });
+        })
+        .filter(record => record.exerciseId === exerciseId);
     } catch (error) {
       console.error('Error getting personal records by exercise:', error);
       throw error;
@@ -127,25 +128,24 @@ export class PersonalRecordsCollection {
 
   static async getBestPersonalRecords(userId: string): Promise<Record<string, PersonalRecord>> {
     try {
-      const exercisesQuery = query(
-        collection(db, this.collectionName),
-        where('userId', '==', userId),
-        orderBy('exerciseId'),
-        orderBy('value', 'desc')
-      );
-      const querySnapshot = await getDocs(exercisesQuery);
+      const userDocRef = doc(db, 'users', userId);
+      const recordsRef = collection(userDocRef, this.collectionName);
+      const q = query(recordsRef, orderBy('date', 'desc'));
+      const querySnapshot = await getDocs(q);
 
-      const bestRecords: Record<string, PersonalRecord> = {};
-
-      querySnapshot.docs.forEach(doc => {
+      const records = querySnapshot.docs.map(doc => {
         const data = doc.data();
-        const record = PersonalRecordSchema.parse({
+        return PersonalRecordSchema.parse({
           id: doc.id,
           ...data,
           date: data.date?.toDate(),
           createdAt: data.createdAt?.toDate(),
         });
+      });
 
+      const bestRecords: Record<string, PersonalRecord> = {};
+
+      records.forEach(record => {
         if (!bestRecords[record.exerciseId] || record.value > bestRecords[record.exerciseId].value) {
           bestRecords[record.exerciseId] = record;
         }
@@ -183,7 +183,7 @@ export class PersonalRecordsCollection {
           workoutSessionId,
         };
 
-        await this.createPersonalRecord(recordData);
+        await this.createPersonalRecord(userId, recordData);
         return true;
       }
 
